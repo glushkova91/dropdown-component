@@ -1,0 +1,48 @@
+{
+  "name": "dropdpwn-component",
+  "version": "1.0.0",
+  "description": "dropdown-component with autocomplete",
+  "main": "index.html",
+  "scripts": {
+    "test": "test",
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glushkova91/dropdown-component.git"
+  },
+  "keywords": [
+    "dropdown",
+    "autocomplete",
+    "multyselect",
+    "cross-browser"
+  ],
+  "author": "Anastasiia Glushkova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/glushkova91/dropdown-component/issues"
+  },
+  "homepage": "https://github.com/glushkova91/dropdown-component#readme",
+  "devDependencies": {
+    "autoprefixer": "^8.6.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^0.28.11",
+    "mini-css-extract-plugin": "^0.4.0",
+    "postcss-loader": "^2.1.5",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^3.0.1"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  },
+  "browserslist": [
+    "last 2 versions",
+    "not dead",
+    ">0.1%"
+  ]
+}

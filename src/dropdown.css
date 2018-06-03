@@ -1,0 +1,11 @@
+.dropdown-wrapper.is-open .dropdown-list-box{
+    display: block;
+}
+
+.dropdown-wrapper .dropdown-list-box{
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
