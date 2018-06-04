@@ -1,11 +1,50 @@
-.dropdown-wrapper.is-open .dropdown-list-box{
+body {
+    font-size: 13px;
+    font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
+}
+
+.dropdown.is-open .dropdown-list{
     display: block;
 }
 
-.dropdown-wrapper .dropdown-list-box{
+.dropdown .dropdown-list{
     display: none;
+}
+
+.dropdown-selection {
+    background: #fff;
+    border: 1px solid #d3d9de;
+    border-radius: 2px;
+    padding: 2px 2px 1px;
+    position: relative;
 }
 
 .hidden {
     display: none;
+}
+
+.dropdown-list__item.disable {
+    display: none;
+}
+
+.display-selected-items .dropdown-list__item.disable {
+    display: block;
+    background: gray;
+}
+
+.dropdown-selection__value {
+    display: inline-block;
+    position: relative;
+    padding-right: 27px;
+}
+.dropdown-selection__value .selection__label {
+    line-height: 25px;
+}
+.dropdown-selection__value .selection__delete {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #e21818;
 }
