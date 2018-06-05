@@ -1,4 +1,6 @@
+import './polyfill.js';
 import DropDownComponent from './dropdown';
+import './index.css';
 
 (function () {
     const select1 = new DropDownComponent({

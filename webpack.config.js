@@ -1,7 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const extractCss = new MiniCssExtractPlugin({
-    filename: 'dropdown.css'
+    filename: '[name].css'
 });
 
 module.exports = {

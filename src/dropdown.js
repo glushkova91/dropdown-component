@@ -49,10 +49,6 @@ class DropDownComponent {
         return element
     }
 
-    // findParent(elem, selector) {
-    //     return elem.closest(selector);
-    // }
-
     render() {
         const wrap = this.createElement('div', { classes: 'dropdown' });
         const selectWrap = this.renderSelectionWrap();
@@ -195,6 +191,9 @@ class DropDownComponent {
 
     onSelectClick(e) {
         const wrapper = e.currentTarget.parentElement;
+        const target = e.target;
+
+        if (target.closest('.dropdown-selection__value')) return;
 
         if (!wrapper.classList.contains('is-open')) {
             wrapper.classList.add('is-open');
