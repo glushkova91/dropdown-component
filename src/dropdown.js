@@ -61,6 +61,7 @@ class DropDownComponent {
         wrap.appendChild(listBox);
 
         this.element.appendChild(wrap);
+        this.updateSelectionState();
     }
 
     renderList() {
@@ -81,7 +82,7 @@ class DropDownComponent {
 
     renderSelectionWrap() {
         const fragment = document.createDocumentFragment();
-        const selectionWrap = this.createElement('div', { classes: 'dropdown-selection' });
+        const selectionWrap = this.createElement('div', { classes: ['dropdown-selection', 'clearfix'] });
         const arrowElement = this.createElement('div', { classes: 'dropdown-selection__arrow' });
 
         if (this.options.autocomplete) {
@@ -91,6 +92,16 @@ class DropDownComponent {
         }
 
         fragment.appendChild(this.renderSelectedValues());
+
+        if (this.options.multiselect) {
+            const addNewValueElem = this.createElement('div', {
+                classes: 'dropdown-selection__add-new',
+                text: 'Добавить'
+            });
+
+            fragment.appendChild(addNewValueElem);
+        }
+
         fragment.appendChild(arrowElement);
 
         if (this.options.multiselect && !this.options.autocomplete) {
@@ -112,6 +123,7 @@ class DropDownComponent {
                 this.unSelectOption(e.target.getAttribute('data-id'));
             }
         });
+
         return selectedValuesElem;
     }
 
@@ -166,6 +178,50 @@ class DropDownComponent {
         }
     }
 
+    updateSelectionState() {
+        const selection = this.element.querySelector('.dropdown-selection');
+
+        if (this.selectedList.length) {
+            this.setSelectionUnempty(selection);
+        } else {
+            this.setSelectionEmpty(selection);
+        }
+
+        if (this.options.multiselect) {
+            const unselectedList = this.list.filter(item => !item.selected);
+
+            if (unselectedList.length) {
+                this.setSelectionUncompleted(selection);
+            } else {
+                this.setSelectionCompleted(selection);
+            }
+        } else {
+            if (this.selectedList.length) {
+                this.setSelectionCompleted(selection);
+            } else {
+                this.setSelectionUncompleted(selection);
+            }
+        }
+    }
+
+    setSelectionCompleted(selectionElem) {
+        selectionElem.classList.add('dropdown-selection--selected-state');
+        this.selectionCompleted = true;
+    }
+
+    setSelectionUncompleted(selectionElem) {
+        selectionElem.classList.remove('dropdown-selection--selected-state');
+        this.selectionCompleted = false;
+    }
+
+    setSelectionEmpty(selectionElem) {
+        selectionElem.classList.add('dropdown-selection--empty-state');
+    }
+
+    setSelectionUnempty(selectionElem) {
+        selectionElem.classList.remove('dropdown-selection--empty-state');
+    }
+
     rerenderList() {
         this.element.querySelectorAll('.dropdown-list__item').forEach((itemElement) => {
             const itemId = itemElement.getAttribute('data-id');
@@ -181,6 +237,7 @@ class DropDownComponent {
     rerender() {
         this.rerenderSelection();
         this.rerenderList();
+        this.updateSelectionState();
     }
 
     onListClick(e) {
@@ -190,20 +247,21 @@ class DropDownComponent {
     }
 
     onSelectClick(e) {
-        const wrapper = e.currentTarget.parentElement;
         const target = e.target;
 
-        if (target.closest('.dropdown-selection__value')) return;
+        if (target.closest('.dropdown-selection__value') || this.selectionCompleted) return;
 
-        if (!wrapper.classList.contains('is-open')) {
-            wrapper.classList.add('is-open');
+        if (!this.isOpen) {
+            this.openListBox();
         } else {
-            wrapper.classList.remove('is-open');
+            this.closeListBox();
         }
     }
 
     selectOption(itemId) {
         const value = this.list.find(item => item.id === itemId);
+
+        value.selected = true;
 
         if(!this.options.multiselect) {
             this.clearSelectedList();
@@ -212,12 +270,17 @@ class DropDownComponent {
         this.addSelectedValue(value);
         this.rerender();
 
-        if (!this.options.multiselect || options.autocomplete) {
+        const unselectedList = this.list.filter(item => !item.selected);
+
+        if (!(this.options.multiselect && unselectedList.length) || this.options.autocomplete) {
             this.closeListBox();
         }
     }
 
     unSelectOption(itemId) {
+        const value = this.list.find(item => item.id === itemId);
+
+        value.selected = false;
         this.removeSelectedValue(itemId);
         this.rerender();
     }
@@ -236,12 +299,22 @@ class DropDownComponent {
         this.selectedList = [];
     }
 
+    openListBox() {
+        const wrapper = this.element.querySelector('.dropdown');
+
+        wrapper.classList.add('is-open');
+        this.isOpen = true;
+
+        this.publiclyTrigger('onOpen', this.element);
+    }
+
     closeListBox() {
         const wrapper = this.element.querySelector('.dropdown');
 
         wrapper.classList.remove('is-open');
+        this.isOpen = false;
 
-        this.publiclyTrigger('onClose', this.element)
+        this.publiclyTrigger('onClose', this.element);
     }
 
     get value() {

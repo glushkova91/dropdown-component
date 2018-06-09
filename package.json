@@ -6,7 +6,8 @@
   "scripts": {
     "test": "test",
     "build": "webpack --mode production",
-    "dev": "webpack --mode development"
+    "dev": "webpack --mode development",
+    "start": "webpack-dev-server --mode development"
   },
   "repository": {
     "type": "git",
@@ -33,19 +34,23 @@
     "mini-css-extract-plugin": "^0.4.0",
     "postcss-loader": "^2.1.5",
     "webpack": "^4.10.2",
-    "webpack-cli": "^3.0.1"
+    "webpack-cli": "^3.0.1",
+    "webpack-dev-server": "^3.1.4"
   },
   "babel": {
     "presets": [
-      ["env", {
-        "targets": {
-          "browsers": [
-            "last 2 versions",
-            "not dead",
-            ">0.1%"
-          ]
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "last 2 versions",
+              "not dead",
+              ">0.1%"
+            ]
+          }
         }
-      }]
+      ]
     ]
   }
 }
