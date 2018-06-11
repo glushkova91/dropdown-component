@@ -2,12 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Drop-down auto-complete component</title>
+    <link rel="stylesheet" href="dist/bundle.css">
 </head>
 <body>
+    <div class="controls">
+        <div class="multiselect">
+            <input type="checkbox" id="multiselect-option" name="multiselect">
+            <label for="multiselect-option">Multiselect</label>
+        </div>
+        <div class="autocomplete">
+            <input type="checkbox" id="autocomplete-option" name="autocomplete">
+            <label for="autocomplete-option">Autocomplete</label>
+        </div>
+        <div class="show-image">
+            <input type="checkbox" id="show-image-option" name="show-image">
+            <label for="show-image-option">Show image</label>
+        </div>
+    </div>
     <div id="drop-down-user" class="drop-down-user drop-down"></div>
-    <div id="drop-down-multiselect" class="drop-down-multiselect drop-down"></div>
+    <!--<div id="drop-down-multiselect" class="drop-down-multiselect drop-down"></div>-->
+    <!--<div id="drop-down-autocomplete" class="drop-down-autocomplete drop-down"></div>-->
+    <!--<div id="drop-down-multiselect-autocomplete" class="drop-down-multiselect-autocomplete drop-down"></div>-->
+    <noscript>
+        <select size="3" multiple name="hero[]">
+            <option disabled>Выберите героя</option>
+            <option value="Чебурашка">Чебурашка</option>
+            <option selected value="Крокодил Гена">Крокодил Гена</option>
+            <option value="Шапокляк">Шапокляк</option>
+            <option value="Крыса Лариса">Крыса Лариса</option>
+        </select>
+    </noscript>
 </body>
 <script type="text/javascript" src="dist/bundle.js"></script>
-<link rel="stylesheet" href="dist/bundle.css">
 </html>

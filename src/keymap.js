@@ -1,0 +1,240 @@
+const keyMap = {
+    q: {
+        opposite: 'й',
+        translit: null
+    },
+    w: {
+        opposite: 'ц',
+        translit: 'в'
+    },
+    e: {
+        opposite: 'у',
+        translit: 'е'
+    },
+    r: {
+        opposite: 'к',
+        translit: 'р'
+    },
+    t: {
+        opposite: 'е',
+        translit: 'т'
+    },
+    y: {
+        opposite: 'н',
+        translit: 'ы'
+    },
+    u: {
+        opposite: 'г',
+        translit: 'у'
+    },
+    i: {
+        opposite: 'ш',
+        translit: 'и'
+    },
+    o: {
+        opposite: 'щ',
+        translit: 'о'
+    },
+    p: {
+        opposite: 'з',
+        translit: 'п'
+    },
+    a: {
+        opposite: 'ф',
+        translit: 'а'
+    },
+    s: {
+        opposite: 'ы',
+        translit: 'с'
+    },
+    d: {
+        opposite: 'в',
+        translit: 'д'
+    },
+    f: {
+        opposite: 'а',
+        translit: 'ф'
+    },
+    g: {
+        opposite: 'п',
+        translit: 'г'
+    },
+    h: {
+        opposite: 'р',
+        translit: 'х'
+    },
+    j: {
+        opposite: 'о',
+        translit: 'ж'
+    },
+    k: {
+        opposite: 'л',
+        translit: 'к'
+    },
+    l: {
+        opposite: 'д',
+        translit: 'л'
+    },
+    z: {
+        opposite: 'я',
+        translit: 'з'
+    },
+    x: {
+        opposite: 'ч',
+        translit: 'х'
+    },
+    c: {
+        opposite: 'с',
+        translit: 'ц'
+    },
+    v: {
+        opposite: 'м',
+        translit: 'в'
+    },
+    b: {
+        opposite: 'и',
+        translit: 'б'
+    },
+    n: {
+        opposite: 'т',
+        translit: 'н'
+    },
+    m: {
+        opposite: 'ь',
+        translit: 'м'
+    },
+    ё: {
+        opposite: null,
+        translit: 'e'
+    },
+    й: {
+        opposite: 'q',
+        translit: 'i'
+    },
+    ц: {
+        opposite: 'w',
+        translit: 'c'
+    },
+    у: {
+        opposite: 'e',
+        translit: 'u'
+    },
+    к: {
+        opposite: 'r',
+        translit: 'k'
+    },
+    е: {
+        opposite: 't',
+        translit: 'e'
+    },
+    н: {
+        opposite: 'y',
+        translit: 'n'
+    },
+    г: {
+        opposite: 'u',
+        translit: 'g'
+    },
+    ш: {
+        opposite: 'i',
+        translit: 'sh'
+    },
+    щ: {
+        opposite: 'o',
+        translit: 'sc'
+    },
+    з: {
+        opposite: 'p',
+        translit: 'z'
+    },
+    х: {
+        opposite: null,
+        translit: 'h'
+    },
+    ъ: {
+        opposite: null,
+        translit: 'ie'
+    },
+    ф: {
+        opposite: 'a',
+        translit: 'f'
+    },
+    ы: {
+        opposite: 's',
+        translit: 'y'
+    },
+    в: {
+        opposite: 'd',
+        translit: 'v'
+    },
+    а: {
+        opposite: 'f',
+        translit: 'a'
+    },
+    п: {
+        opposite: 'g',
+        translit: 'p'
+    },
+    р: {
+        opposite: 'h',
+        translit: 'r'
+    },
+    о: {
+        opposite: 'j',
+        translit: 'o'
+    },
+    л: {
+        opposite: 'k',
+        translit: 'l'
+    },
+    д: {
+        opposite: 'l',
+        translit: 'd'
+    },
+    ж: {
+        opposite: null,
+        translit: 'j'
+    },
+    э: {
+        opposite: null,
+        translit: 'e'
+    },
+    я: {
+        opposite: 'z',
+        translit: 'ia'
+    },
+    ч: {
+        opposite: 'x',
+        translit: 'ch'
+    },
+    с: {
+        opposite: 'c',
+        translit: 's'
+    },
+    м: {
+        opposite: 'v',
+        translit: 'm'
+    },
+    и: {
+        opposite: 'b',
+        translit: 'i'
+    },
+    т: {
+        opposite: 'n',
+        translit: 't'
+    },
+    ь: {
+        opposite: 'm',
+        translit: null
+    },
+    б: {
+        opposite: null,
+        translit: 'b'
+    },
+    ю: {
+        opposite: null,
+        translit: 'iu'
+    }
+};
+
+export default keyMap;

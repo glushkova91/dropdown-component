@@ -31,24 +31,25 @@
     box-sizing: border-box;
     z-index: 900;
     background-color: white;
+    border-bottom: 0;
 }
 
 .dropdown-selection {
     background: #fff;
     border: 1px solid #d3d9de;
     border-radius: 2px;
-    padding: 2px 2px 2px 8px;
+    padding: 2px 25px 0 8px;
     position: relative;
     line-height: 25px;
-}
-
-.dropdown-list__item.disable {
-    display: none;
 }
 
 .display-selected-items .dropdown-list__item.disable {
     display: block;
     background: gray;
+}
+
+.dropdown-list__item.dropdown-list__item--no-result {
+    cursor: default;
 }
 
 .dropdown-list__item {
@@ -57,16 +58,17 @@
     border-bottom: 1px solid #d3d9de;
 }
 
-.dropdown-list__item:hover {
+.dropdown-list__item.active{
     background-color: #dce2e7;
-}
-
-.dropdown-list__item:last-child {
-    border-bottom: 0;
 }
 
 .dropdown-selection__placeholder {
     cursor: pointer;
+    display: none;
+    margin-bottom: 2px;
+}
+.dropdown-selection--empty-state .dropdown-selection__placeholder {
+    display: block;
 }
 
 .dropdown-selection__arrow {
@@ -101,7 +103,8 @@
     background-color: #115d9b;
     color: white;
     border-radius: 2px;
-    margin-right: 3px;
+    margin: 0 3px 2px 0;
+    float: left;
 }
 .dropdown-selection__value .selection__delete {
     width: 25px;
@@ -119,7 +122,6 @@
 }
 
 .dropdown-selection__values {
-    float: left;
 }
 
 .dropdown-selection__add-new {
@@ -140,7 +142,42 @@
 }
 
 .dropdown.is-open .dropdown-selection__add-new,
+.dropdown-selection.search-active .dropdown-selection__add-new,
 .dropdown-selection--empty-state .dropdown-selection__add-new,
 .dropdown-selection--selected-state .dropdown-selection__add-new{
     display: none;
+}
+
+.dropdown-selection__input {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    display: none;
+    height: 25px;
+    padding: 0;
+    background-color: transparent;
+    margin-bottom: 2px;
+}
+
+.dropdown.is-open .dropdown-selection__input,
+.dropdown-selection.search-active .dropdown-selection__input,
+.dropdown-selection--empty-state .dropdown-selection__input{
+    display: inline-block;
+}
+
+.dropdown-list__item-avatar {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    margin-right: 10px;
+    overflow: hidden;
+    line-height: 34px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.dropdown-list__item-avatar img {
+    width: 100%;
+    vertical-align: middle;
 }
