@@ -3,7 +3,8 @@ body {
     font-family: -apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
 }
 
-.drop-down {
+.drop-down,
+.drop-down-value {
     width: 300px;
     margin-bottom: 15px;
 }
