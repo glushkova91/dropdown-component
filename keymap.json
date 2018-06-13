@@ -103,6 +103,62 @@
         "opposite": "ь",
         "translit": "м"
     },
+    ".": {
+        "opposite": "ю",
+        "translit": null
+    },
+    ">": {
+        "opposite": "ю",
+        "translit": null
+    },
+    ",": {
+        "opposite": "б",
+        "translit": null
+    },
+    "<": {
+        "opposite": "б",
+        "translit": null
+    },
+    "`": {
+        "opposite": "ё",
+        "translit": null
+    },
+    "~": {
+        "opposite": "ё",
+        "translit": null
+    },
+    "[": {
+        "opposite": "х",
+        "translit": null
+    },
+    "{": {
+        "opposite": "х",
+        "translit": null
+    },
+    "]": {
+        "opposite": "ъ",
+        "translit": null
+    },
+    "}": {
+        "opposite": "ъ",
+        "translit": null
+    },
+    ";": {
+        "opposite": "ж",
+        "translit": null
+    },
+    ":": {
+        "opposite": "ж",
+        "translit": null
+    },
+    "'": {
+        "opposite": "э",
+        "translit": null
+    },
+    "\"": {
+        "opposite": "э",
+        "translit": null
+    },
     "ё": {
         "opposite": null,
         "translit": "e"

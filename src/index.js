@@ -57,24 +57,10 @@ import * as imgs from './images';
         });
     });
 
-    // const select2 = new DropDownComponent({
-    //     element: document.getElementById('drop-down-multiselect'),
-    //     multiselect: true,
-    //     list: [{ id: 1, label: 'Хан Соло'}, { id: 2, label: 'Люк Скайвокер'}],
-    //     placeholder: 'Выберите друга'
-    // });
-    //
-    // const select3 = new DropDownComponent({
-    //     element: document.getElementById('drop-down-autocomplete'),
-    //     autocomplete: true,
-    //     list: [{ id: 1, label: 'Хан Соло' }, { id: 2, label: 'Люк Скайвокер' }],
-    //     placeholder: 'Введите имя друга'
-    // });
-    // const select4 = new DropDownComponent({
-    //     element: document.getElementById('drop-down-multiselect-autocomplete'),
-    //     autocomplete: true,
-    //     multiselect: true,
-    //     list: [{ id: 1, label: 'Хан Соло' }, { id: 2, label: 'Люк Скайвокер' }],
-    //     placeholder: 'Введите имя друга'
-    // });
+    const select2 = new DropDownComponent({
+        element: document.getElementById('drop-down-additional'),
+        multiselect: true,
+        list: [{ id: 1, label: 'Хан Соло'}, { id: 2, label: 'Люк Скайвокер'}],
+        placeholder: 'Выберите друга'
+    });
 }());

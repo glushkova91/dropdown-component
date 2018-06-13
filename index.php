@@ -7,10 +7,26 @@
     <link rel="stylesheet" href="dist/bundle.css">
     <script>
         var dropdownInput = [
-            { id: 1, label: 'Хан Соло'},
-            { id: 2, label: 'Люк Скайвокер'},
-            { id: 3, label: 'Princess Lea'},
-            { id: 4, label: 'Chewbacca'}
+            <?php
+            $con=mysqli_connect("localhost","root","","users");
+            if (mysqli_connect_errno())
+              {
+              echo "Failed to connect to MySQL: " . mysqli_connect_error();
+              }
+              mysqli_set_charset($con,"utf8");
+            $sql="SELECT id,firstname,lastname,img_path FROM users WHERE 1 ORDER BY firstname ASC";
+            $result=mysqli_query($con,$sql);
+            while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                $array[]= $row;
+            }
+            foreach ($array as $key => $value) {
+                echo "{ id: {$value['id']}, url: '{$value['img_path']}', label: '{$value['firstname']} {$value['lastname']}'},";
+            }
+
+            mysqli_free_result($result);
+
+            mysqli_close($con);
+            ?>
         ];
     </script>
 </head>
@@ -35,7 +51,7 @@
     </div>
     <div id="drop-down-user" class="drop-down-user drop-down"></div>
     <div id="drop-down-value"></div>
-    <div id="drop-down-additional" class="drop-down-multiselect drop-down"></div>
+     <div id="drop-down-additional" class="drop-down-multiselect drop-down"></div>
     <noscript>
         <style>
             .controls {

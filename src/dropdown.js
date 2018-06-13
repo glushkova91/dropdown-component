@@ -431,7 +431,6 @@ class DropDownComponent {
 
                 return result;
             });
-
         };
         const getFilteredList = (convertedArray) => {
             return convertedArray.every(i => i)
@@ -457,12 +456,9 @@ class DropDownComponent {
 
                     if (!filteredList.length && this.options.extendedSearch) {
                         delay(() => {
-                            this.extendedSearch([
-                                textArray.toString(),
-                                oppositeText.toString(),
-                                translitText.toString(),
-                                oppositeTranslitText.toString()
-                            ]);
+                            const args = [textArray, oppositeText, translitText, oppositeTranslitText];
+
+                            this.extendedSearch(args.filter(b => b.every(c => c)).map(a => a.toString()));
                         }, 200);
                     }
                 }
