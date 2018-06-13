@@ -22,7 +22,7 @@ foreach ($seachKeys as $i => $seachKey) {
             $query .= " WHERE";
         }
     
-        $trimed = trim($value);
+        $trimed = addslashes(trim($value));
         $query .=" (nickname like '%$trimed%' OR firstname like '%$trimed%' OR lastname like '%$trimed%')";
      
         if ((count($seachArray) - 1) !== $key) {

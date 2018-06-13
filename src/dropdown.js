@@ -480,7 +480,9 @@ class DropDownComponent {
         const unselectedList = this.list.filter(item => !item.selected);
         const response = JSON.parse(request.response);
 
-        this.filteredList = unselectedList.filter((item) => response.indexOf(item.id) !== -1);
+        this.filteredList = response
+            ? unselectedList.filter((item) => response.indexOf(item.id) !== -1)
+            : [];
         this.rerenderList();
     }
 
