@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Drop-down auto-complete component</title>
     <link rel="stylesheet" href="dist/bundle.css">
+    <script>
+
+        var dropdownInput = [
+            { id: 1, label: 'Хан Соло'},
+            { id: 2, label: 'Люк Скайвокер'},
+            { id: 3, label: 'Princess Lea'},
+            { id: 4, label: 'Chewbacca'}
+        ];
+    </script>
 </head>
 <body>
     <div class="controls">
@@ -20,18 +29,34 @@
             <input type="checkbox" id="show-image-option" name="show-image">
             <label for="show-image-option">Show image</label>
         </div>
+        <div class="extended-search">
+            <input type="checkbox" id="extended-search-option" name="extended-search">
+            <label for="extended-search-option">Extended search</label>
+        </div>
     </div>
     <div id="drop-down-user" class="drop-down-user drop-down"></div>
+    <div id="drop-down-value"></div>
     <!--<div id="drop-down-multiselect" class="drop-down-multiselect drop-down"></div>-->
     <!--<div id="drop-down-autocomplete" class="drop-down-autocomplete drop-down"></div>-->
     <!--<div id="drop-down-multiselect-autocomplete" class="drop-down-multiselect-autocomplete drop-down"></div>-->
     <noscript>
-        <select size="3" multiple name="hero[]">
-            <option disabled>Выберите героя</option>
-            <option value="Чебурашка">Чебурашка</option>
-            <option selected value="Крокодил Гена">Крокодил Гена</option>
-            <option value="Шапокляк">Шапокляк</option>
-            <option value="Крыса Лариса">Крыса Лариса</option>
+        <style>
+            .controls {
+                display: none;
+            }
+
+            #noscript-select {
+                height: 2.4375rem;
+                padding: .5rem 1.5rem .5rem .5rem;
+                margin: 0 0 1rem;
+            }
+        </style>
+        <select name="user" id="noscript-select">
+            <option>Выберите пользователя</option>
+            <option value="1">Хан Соло</option>
+            <option value="2">Люк Скайвокер</option>
+            <option value="3">Princess Lea</option>
+            <option value="4">Chewbacca</option>
         </select>
     </noscript>
 </body>

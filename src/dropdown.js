@@ -1,10 +1,16 @@
 import './dropdown.css';
-import keyMap from './keymap';
+import keyMap from '../keymap.json';
 
 const KEY_CODE_UP = 38;
 const KEY_CODE_DOWN = 40;
 const KEY_CODE_ENTER = 13;
-
+const delay = (function(){
+    let timer = 0;
+    return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
 class DropDownComponent {
     constructor(options) {
         if (!options.element) return;
@@ -103,8 +109,8 @@ class DropDownComponent {
     }
 
     bindEvents() {
-        document.addEventListener('click', this.onDocumentClick.bind(this));
-        document.addEventListener('touchstart', this.onDocumentClick.bind(this));
+        this.addListener(document, 'click', 'onDocumentClick');
+        this.addListener(document, 'touchstart', 'onDocumentClick');
     }
 
     onDocumentClick(e) {
@@ -427,9 +433,7 @@ class DropDownComponent {
             });
 
         };
-        const getFilteredList = (array, property) => {
-            const convertedArray = getTextFromKeyMap(array, property);
-
+        const getFilteredList = (convertedArray) => {
             return convertedArray.every(i => i)
                 ? unselectedList.filter((item) => filter(item, convertedArray))
                 : [];
@@ -437,18 +441,51 @@ class DropDownComponent {
         let filteredList = unselectedList.filter((item) => filter(item, textArray));
 
         if (!filteredList.length) {
-            filteredList = getFilteredList(textArray, 'opposite');
+            const oppositeText = getTextFromKeyMap(textArray, 'opposite');
+
+            filteredList = getFilteredList(oppositeText);
 
             if (!filteredList.length) {
-                filteredList = getFilteredList(textArray, 'translit');
+                const translitText = getTextFromKeyMap(textArray, 'translit');
+
+                filteredList = getFilteredList(translitText);
 
                 if (!filteredList.length) {
-                    filteredList = getFilteredList(getTextFromKeyMap(textArray, 'opposite'), 'translit');
+                    const oppositeTranslitText = getTextFromKeyMap(getTextFromKeyMap(textArray, 'opposite'), 'translit');
+
+                    filteredList = getFilteredList(oppositeTranslitText);
+
+                    if (!filteredList.length && this.options.extendedSearch) {
+                        delay(() => {
+                            this.extendedSearch([
+                                textArray.toString(),
+                                oppositeText.toString(),
+                                translitText.toString(),
+                                oppositeTranslitText.toString()
+                            ]);
+                        }, 200);
+                    }
                 }
             }
         }
 
         this.filteredList = filteredList;
+    }
+
+    extendedSearch(strList) {
+        const request = new XMLHttpRequest();
+
+        request.addEventListener('load', this.extendedSearchListener.bind(this, request));
+        request.open('POST', 'api/search.php', true);
+        request.send(JSON.stringify({ seachKey: strList }));
+    }
+
+    extendedSearchListener(request) {
+        const unselectedList = this.list.filter(item => !item.selected);
+        const response = JSON.parse(request.response);
+
+        this.filteredList = unselectedList.filter((item) => response.indexOf(item.id) !== -1);
+        this.rerenderList();
     }
 
     selectOption(itemId) {
@@ -469,6 +506,7 @@ class DropDownComponent {
         }
 
         this.addSelectedValue(value);
+        this.triggerOnChange();
         this.rerender();
 
         const unselectedList = this.list.filter(item => !item.selected);
@@ -483,7 +521,16 @@ class DropDownComponent {
 
         value.selected = false;
         this.removeSelectedValue(itemId);
+        this.triggerOnChange();
         this.rerender();
+    }
+
+    triggerOnChange() {
+        const value = this.options.multiselect
+            ? this.selectedList.map(item => item.id)
+            : this.selectedList[0] && this.selectedList[0].id;
+
+        this.publiclyTrigger('onChange', this, [value]);
     }
 
     addSelectedValue(value) {
@@ -563,23 +610,13 @@ class DropDownComponent {
     }
 
     destroy() {
-        var wrap = this.element.querySelector('.dropdown');
+        const wrap = this.element.querySelector('.dropdown');
 
         this.element.removeChild(wrap);
+        this.removeListener(document, 'click', 'onDocumentClick');
+        this.removeListener(document, 'touchstart', 'onDocumentClick');
 
         this.init();
-    }
-
-    get value() {
-        return this.selectedList;
-    }
-
-    set value(value) {
-        if (value instanceof Array) {
-            this.selectedList = value.filter(item => this.list.includes(item));
-        } else if (this.list.includes(value)) {
-            this.selectedList = [value];
-        }
     }
 }
 

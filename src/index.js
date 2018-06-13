@@ -4,37 +4,56 @@ import './index.css';
 import * as imgs from './images';
 
 (function() {
-    const select1 = new DropDownComponent({
+    const dropDownValueElem = document.getElementById('drop-down-value');
+    const select = new DropDownComponent({
         element: document.getElementById('drop-down-user'),
-        list: [
-            { id: 1, label: 'Хан Соло'},
-            { id: 2, label: 'Люк Скайвокер'},
-            { id: 3, label: 'Princess Lea'},
-            { id: 4, label: 'Chewbacca'}
-            ],
-        placeholder: 'Выберите друга'
+        list: dropdownInput,
+        placeholder: 'Выберите друга',
+        onChange: function (value) {
+            let text = '';
+
+            if (typeof value === 'string') {
+                text = dropdownInput.find(item => item.id == value).label;
+            }
+
+            if (typeof value === 'object') {
+                text = String(value.map(id => dropdownInput.find(item => item.id == id).label));
+            }
+
+            dropDownValueElem.innerText = text;
+        }
     });
+    const updateDropDownModel = (options) => {
+        dropDownValueElem.innerText = '';
+        select.updateOptions(options);
+    };
 
     document.getElementById('multiselect-option').addEventListener('change', function(e) {
-        select1.updateOptions({
+        updateDropDownModel({
             multiselect: this.checked,
             placeholder: this.checked ? 'Введите имя друга': 'Выберите друга'
         });
     });
 
     document.getElementById('autocomplete-option').addEventListener('change', function(e) {
-        select1.updateOptions({
+        updateDropDownModel({
             autocomplete: this.checked,
             emptyListText: 'Пользователь не найден'
         });
     });
 
     document.getElementById('show-image-option').addEventListener('change', function(e) {
-        select1.updateOptions({
-            showImage: this.checked,
-            list: [
-                { id: 1, label: 'Хан Соло', url: 'dist/images/solo.jpg'},
-                { id: 2, label: 'Люк Скайвокер', url: 'dist/images/luk.jpg'}],
+        updateDropDownModel({
+            showImage: this.checked
+        });
+    });
+
+    document.getElementById('extended-search-option').addEventListener('change', function(e) {
+        updateDropDownModel({
+            extendedSearch: {
+                url: 'search?field=nickname',
+                field: 'nickname'
+            }
         });
     });
 

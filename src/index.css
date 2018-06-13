@@ -7,3 +7,9 @@ body {
     width: 300px;
     margin-bottom: 15px;
 }
+
+.controls {
+    margin-bottom: 10px;
+    border: 1px solid #a9a6a6;
+    width: 300px;
+}
