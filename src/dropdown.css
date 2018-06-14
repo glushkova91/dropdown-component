@@ -41,7 +41,6 @@
     box-sizing: border-box;
     z-index: 900;
     background-color: white;
-    max-height: 175px;
     overflow: hidden;
     overflow-y: auto;
     margin-top: -1px;
