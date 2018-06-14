@@ -130,11 +130,10 @@
     right: 0;
     text-align: center;
     cursor: pointer;
-}
-
-.dropdown-selection__value .selection__delete:after {
-    content: '\1f7aa';
-    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: 10px;
+    background-position: center;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTnU1rJkAAAAqElEQVQ4T42SUQrDMAxDe+p2sO0Wo+wu27HKPr1JrgzBOMkehNqOJNI2i5k9sA6sdfkD6qTf2RxfgfoqTQn3JaX2w8Gm3ukFtEZxiY27Bk4OyEb0N22d9AKmxqAIeKl0usYgBwRTYwDhWx6HJ9DWGAjzV3U4l6QmG4sT1AGF0d8Rz+Fv7BqDbgCKVTMnG4MiYOOwvdvD39EGoPa7vbNAf97VCdRRb2bPH+LK2dOOf+1hAAAAAElFTkSuQmCC');
 }
 
 .dropdown-selection__values {
