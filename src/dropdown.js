@@ -41,6 +41,7 @@ class DropDownComponent {
 
         if (this.options.autocomplete) {
             this.filteredList = this.list;
+            this.inputValue = '';
         }
     }
 
@@ -93,7 +94,13 @@ class DropDownComponent {
     }
 
     render() {
-        const wrap = this.createElement('div', { classes: 'dropdown' });
+        const wrap = this.createElement('div', {
+            classes: 'dropdown',
+            attrs: [{
+                    name: 'tabindex',
+                    data: 0
+                }]
+        });
         const selectWrap = this.renderSelectionWrap();
         const listBox = this.renderList();
 
@@ -292,6 +299,12 @@ class DropDownComponent {
                     item.classList.remove('hidden');
                 }
             });
+
+            const activeElem = this.element.querySelector('.dropdown-list .active');
+
+            if (activeElem) {
+                activeElem.classList.remove('active');
+            }
         } else {
             items.forEach((itemElement) => {
                 const itemId = itemElement.getAttribute('data-id');
@@ -308,6 +321,8 @@ class DropDownComponent {
                 }
             });
         }
+
+        this.updateListTopPosition();
     }
 
     updateSelectionState() {
@@ -353,6 +368,8 @@ class DropDownComponent {
     }
 
     updateSearchState(input) {
+        this.inputValue = input.value;
+
         if (input.value) {
             input.parentElement.classList.add('search-active');
         } else {
@@ -384,7 +401,7 @@ class DropDownComponent {
 
         if (!this.isOpen) {
             this.openListBox();
-        } else if (!this.options.autocomplete) {
+        } else if (!(this.options.autocomplete && target.closest('.dropdown-selection__input'))) {
             this.closeListBox();
         }
     }
@@ -393,7 +410,7 @@ class DropDownComponent {
         const { target } = event;
         const programsKeyCodes = [KEY_CODE_DOWN, KEY_CODE_ENTER, KEY_CODE_UP];
 
-        if (programsKeyCodes.indexOf(event.keyCode) === -1) {
+        if (programsKeyCodes.indexOf(event.keyCode) === -1 && this.inputValue !== target.value) {
             this.updateSearchState(target);
 
             this.filterListItems(target.value);
@@ -422,10 +439,11 @@ class DropDownComponent {
                 let result = '';
 
                 for (let i = 0; i <= originalText.length - 1; i++) {
-                    const charModel = keyMap[originalText.charAt(i)];
-                    const char = charModel && charModel[property];
+                    const originalChar = originalText.charAt(i);
+                    const charModel = keyMap[originalChar];
+                    const char = charModel ? charModel[property] : originalChar;
 
-                    if (char) result += keyMap[originalText.charAt(i)][property];
+                    if (char) result += char;
                     else return '';
                 }
 
@@ -547,31 +565,72 @@ class DropDownComponent {
 
     openListBox() {
         const wrapper = this.element.querySelector('.dropdown');
+        const listElement = this.element.querySelector('.dropdown-list');
 
         wrapper.classList.add('is-open');
+
+        this.setListPosition();
+        listElement.classList.add('visible');
+
         this.isOpen = true;
 
         this.publiclyTrigger('onOpen', this.element);
 
         this.addListener(document, 'keydown', 'onKeyDown');
+
+        if (this.options.autocomplete) {
+            this.element.querySelector('.dropdown-selection__input').focus();
+        }
+    }
+
+    setListPosition() {
+        const wrapper = this.element.querySelector('.dropdown');
+        const listElement = this.element.querySelector('.dropdown-list');
+        const listElementCoords = listElement.getBoundingClientRect();
+        const listElementHeight = listElement.clientHeight;
+        const isEnoughSpaceBelow = (window.innerHeight - listElementCoords.bottom) >= 0;
+        const isEnoughSpaceAbove = wrapper.getBoundingClientRect().top >= listElementHeight;
+
+        if (!isEnoughSpaceBelow && isEnoughSpaceAbove) {
+            listElement.classList.add('display-above');
+            listElement.style.top = `${-1 * listElementHeight}px`;
+        }
+    }
+
+    updateListTopPosition() {
+        const listElement = this.element.querySelector('.dropdown-list');
+
+        if (listElement.classList.contains('display-above')) {
+            listElement.style.top = `${-1 * listElement.clientHeight}px`;
+        }
     }
 
     closeListBox() {
         const wrapper = this.element.querySelector('.dropdown');
+        const listElement = wrapper.querySelector('.dropdown-list');
 
         wrapper.classList.remove('is-open');
         this.isOpen = false;
+        listElement.style.top = '';
+        listElement.classList.remove('display-above');
 
         this.publiclyTrigger('onClose', this.element);
+
         this.removeListener(document, 'keydown', 'onKeyDown');
     }
 
     onKeyDown(e) {
         const hoverItem = this.element.querySelector('.dropdown-list .active');
 
+        if (!hoverItem) return;
+
         switch (e.keyCode) {
             case KEY_CODE_UP: {
-                const prevItem = hoverItem.previousSibling;
+                let prevItem = hoverItem.previousSibling;
+
+                while(prevItem && prevItem.classList.contains('hidden')) {
+                    prevItem = prevItem.previousSibling;
+                }
 
                 if (prevItem) {
                     this.changeActiveItem(hoverItem, prevItem);
@@ -580,7 +639,11 @@ class DropDownComponent {
                 break;
             }
             case KEY_CODE_DOWN: {
-                const nextItem = hoverItem.nextSibling;
+                let nextItem = hoverItem.nextSibling;
+
+                while(nextItem && nextItem.classList.contains('hidden')) {
+                    nextItem = nextItem.nextSibling;
+                }
 
                 if (nextItem) {
                     this.changeActiveItem(hoverItem, nextItem);
@@ -597,7 +660,7 @@ class DropDownComponent {
     }
 
     changeActiveItem(oldElem, newElem) {
-        oldElem.classList.remove('active');
+        if (oldElem) oldElem.classList.remove('active');
         newElem.classList.add('active');
     }
 

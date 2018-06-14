@@ -23,7 +23,7 @@ foreach ($seachKeys as $i => $seachKey) {
         }
     
         $trimed = addslashes(trim($value));
-        $query .=" (nickname like '%$trimed%' OR firstname like '%$trimed%' OR lastname like '%$trimed%')";
+        $query .=" (LOWER(nickname) like '%$trimed%' OR LOWER(firstname) like '%$trimed%' OR LOWER(lastname) like '%$trimed%')";
      
         if ((count($seachArray) - 1) !== $key) {
             $query .= " AND";
