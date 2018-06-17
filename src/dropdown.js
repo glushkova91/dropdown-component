@@ -4,6 +4,7 @@ import keyMap from '../keymap.json';
 const KEY_CODE_UP = 38;
 const KEY_CODE_DOWN = 40;
 const KEY_CODE_ENTER = 13;
+const KEY_CODE_ESC = 27;
 const delay = (function(){
     let timer = 0;
     return function(callback, ms){
@@ -109,6 +110,7 @@ class DropDownComponent {
 
         wrap.appendChild(selectWrap);
         wrap.appendChild(listBox);
+        wrap.addEventListener('keydown', this.onSelectKeyDown.bind(this));
 
         this.element.appendChild(wrap);
         this.updateSelectionState();
@@ -134,6 +136,25 @@ class DropDownComponent {
         this.closeListBox();
     }
 
+    onSelectKeyDown(e) {
+        switch (e.keyCode) {
+            case KEY_CODE_ENTER: {
+                if (!this.isOpen) {
+                    this.openListBox();
+                }
+
+                break;
+            }
+            case KEY_CODE_ESC: {
+                if (this.isOpen) {
+                    this.closeListBox();
+                }
+
+                break;
+            }
+        }
+    }
+
     renderList() {
         const ulElement = this.createElement('ul', { classes: 'dropdown-list' });
 
@@ -149,7 +170,7 @@ class DropDownComponent {
             ulElement.appendChild(this.renderNoResult());
         }
 
-        ulElement.addEventListener('mouseover', this.onListMouseover.bind(this));
+        this.addListener(ulElement, 'mouseover', 'onListMouseover');
 
         return ulElement;
     }
@@ -313,6 +334,7 @@ class DropDownComponent {
                 if (visibleList.some(containsItem)) {
                     if (visibleList[0].id === itemId) {
                         this.changeActiveItem(this.element.querySelector('.dropdown-list .active'), itemElement);
+                        this.updateScrollPosition(itemElement);
                     }
 
                     itemElement.classList.remove('hidden');
@@ -566,17 +588,20 @@ class DropDownComponent {
     openListBox() {
         const wrapper = this.element.querySelector('.dropdown');
         const listElement = this.element.querySelector('.dropdown-list');
+        const firstItem = listElement.querySelector('.dropdown-list__item');
+
+        this.changeActiveItem(listElement.querySelector('.active'), firstItem);
+        this.updateScrollPosition(firstItem);
 
         wrapper.classList.add('is-open');
+        this.isOpen = true;
 
         this.setListPosition();
         listElement.classList.add('visible');
 
-        this.isOpen = true;
-
         this.publiclyTrigger('onOpen', this.element);
 
-        this.addListener(document, 'keydown', 'onKeyDown');
+        setTimeout(this.addListener.bind(this, document, 'keydown', 'onKeyDown'), 100);
 
         if (this.options.autocomplete) {
             this.element.querySelector('.dropdown-selection__input').focus();
@@ -626,28 +651,12 @@ class DropDownComponent {
 
         switch (e.keyCode) {
             case KEY_CODE_UP: {
-                let prevItem = hoverItem.previousSibling;
-
-                while(prevItem && prevItem.classList.contains('hidden')) {
-                    prevItem = prevItem.previousSibling;
-                }
-
-                if (prevItem) {
-                    this.changeActiveItem(hoverItem, prevItem);
-                }
+                this.onKeyUpDown(hoverItem, 'up');
 
                 break;
             }
             case KEY_CODE_DOWN: {
-                let nextItem = hoverItem.nextSibling;
-
-                while(nextItem && nextItem.classList.contains('hidden')) {
-                    nextItem = nextItem.nextSibling;
-                }
-
-                if (nextItem) {
-                    this.changeActiveItem(hoverItem, nextItem);
-                }
+                this.onKeyUpDown(hoverItem, 'down');
 
                 break;
             }
@@ -657,6 +666,38 @@ class DropDownComponent {
                 break;
             }
         }
+    }
+
+    onKeyUpDown(oldHoverItem, direction) {
+        const activeElementProperety = direction === 'up' ? 'previousSibling' : 'nextSibling';
+        let newHoverItem = oldHoverItem[activeElementProperety];
+
+        while(newHoverItem && newHoverItem.classList.contains('hidden')) {
+            newHoverItem = newHoverItem[activeElementProperety];
+        }
+
+        if (newHoverItem) {
+            this.changeActiveItem(oldHoverItem, newHoverItem);
+            this.updateScrollPosition(newHoverItem);
+        }
+    }
+
+    updateScrollPosition(activeElem) {
+        const ulElement = this.element.querySelector('.dropdown-list');
+        const scrollTop = ulElement.scrollTop;
+        const ulHeight = ulElement.offsetHeight;
+        const liOffsetTop = activeElem.offsetTop;
+        const liOffsetBottom = liOffsetTop + activeElem.offsetHeight;
+
+        this.removeListener(ulElement, 'mouseover', 'onListMouseover');
+
+        if (liOffsetTop < scrollTop) {
+            ulElement.scrollTop = liOffsetTop;
+        } else if (liOffsetBottom > (scrollTop + ulHeight)) {
+            ulElement.scrollTop = liOffsetBottom - ulHeight;
+        }
+
+        setTimeout(this.addListener.bind(this, ulElement, 'mouseover', 'onListMouseover'), 100);
     }
 
     changeActiveItem(oldElem, newElem) {
